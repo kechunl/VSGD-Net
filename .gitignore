@@ -1,0 +1,5 @@
+results/
+checkpoints/
+*.pth
+*.DS_Store
+sftp-config.json

@@ -13,7 +13,7 @@ class BaseOptions():
     def initialize(self):    
         # experiment specifics
         self.parser.add_argument('--name', type=str, default='Detection', help='name of the experiment. It decides where to store samples and models')        
-        self.parser.add_argument('--gpu_ids', type=str, default='0,1,2,3', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
+        self.parser.add_argument('--gpu_ids', type=str, default='-1', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
         self.parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='models are saved here')
         self.parser.add_argument('--model', type=str, default='detection', help='which model to use [pix2pixHD | detection]')
         self.parser.add_argument('--norm', type=str, default='instance', help='instance normalization or batch normalization')        
@@ -130,6 +130,8 @@ class BaseOptions():
         if len(self.opt.gpu_ids) > 0:
             torch.cuda.set_device(self.opt.local_rank)
             self.opt.gpu_device = torch.device(self.opt.local_rank)
+        else:
+            self.opt.gpu_device = torch.device("cpu")
 
         # set gpu ids
         if len(self.opt.gpu_ids) > 0 and set_GPU:

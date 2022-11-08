@@ -164,13 +164,12 @@ class AlignedDataset_Detection(BaseDataset):
             target["area"] = torch.as_tensor(np.array([]), dtype=torch.float32)
             target["iscrowd"] = torch.as_tensor(np.array([]), dtype=torch.int64)
 
-        # target = {"fake_target": torch.ones(10)}
-        # target = torch.ones(10)
         return target
 
 
     def __len__(self):
-        return len(self.A_paths) // (self.opt.batchSize*len(self.opt.gpu_ids)) * self.opt.batchSize * len(self.opt.gpu_ids)
+        num = len(self.opt.gpu_ids) if len(self.opt.gpu_ids) != 0  else 1
+        return len(self.A_paths) // (self.opt.batchSize*num) * self.opt.batchSize * num
 
     def name(self):
         return 'AlignedDataset_Detection'

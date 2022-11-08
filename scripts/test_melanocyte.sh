@@ -1,0 +1,1 @@
+python test.py --name 'melanocyte' --dataroot ./datasets --resize_or_crop none --no_instance --ngf 32 --loadSize 512 --use_resnet_as_backbone --use_UNet_skip --fpn_feature decoder --use_attention
