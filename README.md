@@ -21,7 +21,7 @@ cd VSGD-Net
 
 ### Quick Inference
 - A few example H&E skin biopsy images are included in the ```datasets/test_A``` folder.
-- Please download the pre-trained Melanocyte model from here (google drive link), and put it under ```./checkpoints/melanocyte/```.
+- Please download the pre-trained Melanocyte model from [here](https://drive.google.com/file/d/1nVftbE-h8t7OVcTmFR-9FQqRnIkbZIY9/view?usp=sharing) (google drive link), and unzip it under ```./checkpoints/```.
 - Test the model (```bash ./scripts/test_melanocyte.sh```)
 
 The test results will be saved to a html file here: ```./results/melanocyte/test_latest/index.html```
