@@ -4,7 +4,7 @@ from .detection_utils import MetricLogger, is_dist_avail_and_initialized
 
 import sys
 sys.path.append('..')
-from Evaluation.fast_nuclei_Evaluation import compute_nuclei_metric
+from util.fast_nuclei_Evaluation import compute_nuclei_metric
 from .visualize_detection import display_instances
 
 import torch
