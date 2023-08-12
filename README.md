@@ -8,11 +8,9 @@ This is the official PyTorch implementation of VSGD-Net: Virtual Staining Guided
 
 ## Getting Started
 ### Installation
-- Install PyTorch and dependencies from http://pytorch.org
-- Install python libraries [dominate](https://github.com/Knio/dominate).
-```bash
-pip install dominate
-```
+- **Please install the env ```/projects/patho4/shared_env/Pix2Pix_clone.tar.gz``` following ```README.md``` under the same folder.**
+- ~~Install PyTorch and dependencies from http://pytorch.org~~
+- ~~Install python libraries [dominate](https://github.com/Knio/dominate).~~
 - Clone this repo:
 ```bash
 git clone https://github.com/kechunl/VSGD-Net.git
@@ -21,7 +19,7 @@ cd VSGD-Net
 
 ### Quick Inference
 - A few example H&E skin biopsy images are included in the ```datasets/test_A``` folder.
-- Please download the pre-trained Melanocyte model from [here](https://drive.google.com/file/d/1nVftbE-h8t7OVcTmFR-9FQqRnIkbZIY9/view?usp=sharing) (google drive link), and unzip it under ```./checkpoints/```.
+- ~~Please download the pre-trained Melanocyte model from [here](https://drive.google.com/file/d/1nVftbE-h8t7OVcTmFR-9FQqRnIkbZIY9/view?usp=sharing) (google drive link), and unzip it under ```./checkpoints/```.~~
 - Test the model (```bash ./scripts/test_melanocyte.sh```)
 
 The test results will be saved to a html file here: ```./results/melanocyte/test_latest/index.html```
@@ -36,10 +34,24 @@ Note: please specify the data path as explained in [Training with your own datas
 
 #### Training with your own dataset
 - If you want to train with your own dataset, please generate the corresponding image patches and name the folders as ```train_A``` and ```train_B```. For detection purpose, you should also name the mask folder as ```train_mask```. In our paper, we use 256x256 patched in 10x magnification. Please refer to our paper for the preprocessing steps.
-- The default setting for preprocessing is `none` which will do nothing other than making sure the image is divisible by 32. If you want a different setting, please change it by using the `--resize_or_crop` option. For example, `scale_width_and_crop` first resizes the image to have width `opt.loadSize` and then does random cropping of size `(opt.fineSize, opt.fineSize)`. `crop` skips the resizing step and only performs random cropping. `scale_width` scales the width of all training images to `opt.loadSize` (256) while keeping the aspect ratio. 
+- After preparing the image folders, you can generate the json file using ```./data/get_coco_anno.py```. Please take a look at the argument and modify accordingly.
+- In VSGD-Net's dataloader, the default setting for preprocessing is `none` which will do nothing other than making sure the image is divisible by 32. If you want a different setting, please change it by using the `--resize_or_crop` option. For example, `scale_width_and_crop` first resizes the image to have width `opt.loadSize` and then does random cropping of size `(opt.fineSize, opt.fineSize)`. `crop` skips the resizing step and only performs random cropping. `scale_width` scales the width of all training images to `opt.loadSize` (256) while keeping the aspect ratio. 
 
-## More Training/Test Details
+#### More Training/Test Details
 - Flags: see `options/train_options.py` and `options/base_options.py` for all the training flags; see `options/test_options.py` and `options/base_options.py` for all the test flags.
+
+#### Check your training/testing progress
+When training the model, eveything will be stored in ``./checkpoints/[experiment_name]``. You can easily check the output images in ``index.html`` under ``/web_train/`` and ``/web_val/``. The command I use to visualize the folder in web server is:
+
+	python -m http.server 8888 -b patholin.cs.washington.edu
+
+
+## Dataset used in VSGD-Net
+- Path: ```/projects/patho4/Kechun/melanocyte_detection/melanocyte_data/datasets/melanocyte_10x_256```
+- Subsets: train, test, valid
+- ```xxx_A```: H&E;
+  ```xxx_B```: Sox10;
+  ```xxx_mask```: melanocyte mask.
 
 ## Acknowledgement
 

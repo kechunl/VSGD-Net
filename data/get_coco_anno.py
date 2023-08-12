@@ -2,8 +2,8 @@ import os, json, random, glob, math, cv2, argparse, pdb
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 
-from detectron2.utils.visualizer import Visualizer
-from detectron2.data import MetadataCatalog, DatasetCatalog
+# from detectron2.utils.visualizer import Visualizer
+# from detectron2.data import MetadataCatalog, DatasetCatalog
 
 import numpy as np
 from detectron2.structures import BoxMode
@@ -65,7 +65,6 @@ class Mask:
                 #     "labels": 1,
                 # }
             # objs.append(obj)
-        # pdb.set_trace()
         target["boxes"] = boxes
         target["labels"] = np.ones((len(boxes)), dtype=np.int).tolist()
         target["masks"] = []
@@ -90,7 +89,6 @@ def make_dicts(args, dataset='train'):
 
     # Find patches path
     HE_patch_list = glob.glob(os.path.join(args.root_dir, dataset+'_A', '*.png'))
-    # HE_patch_list = glob.glob(os.path.join(img_dir, 'Sox10', '*.png'))
     assert len(HE_patch_list) > 0
     print('Get {} patches in {} set'.format(len(HE_patch_list), dataset))
 
@@ -106,14 +104,14 @@ def make_dicts(args, dataset='train'):
         dataset_dicts.append(record)
 
     if args.dilate:
-        with open(os.path.join(args.root_dir, dataset + '_dilated_1.json'), 'w') as f:
+        with open(os.path.join(args.root_dir, dataset + '_dilated.json'), 'w') as f:
             json.dump(dataset_dicts, f)
     else:
         with open(os.path.join(args.root_dir, dataset + '.json'), 'w') as f:
             json.dump(dataset_dicts, f)
 
 
-def get_dicts(args, dataset, suffix='_dilated_2.json'):
+def get_dicts(args, dataset, suffix='.json'):
     json_file = os.path.join(args.root_dir, dataset + suffix)
     with open(json_file) as f:
         dataset_dicts = json.load(f)
@@ -131,11 +129,8 @@ def get_box_mask_stats(args, dataset, suffix='.json'):
         if len(masks) == 0:
             continue
         areas = np.sum(np.transpose(decode_mask(masks), (2,0,1)), axis=(1,2)) # N*256*256
-        # pdb.set_trace()
         nuclei_area.extend(areas.tolist())
-    pdb.set_trace()
     plt.hist(nuclei_area, bins=np.max(nuclei_area))
-    # pdb.set_trace()
     plt.savefig(os.path.join(args.root_dir, 'nuclei_area_hist.png'))
 
 
@@ -149,9 +144,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    get_box_mask_stats(args, ['train', 'val', 'test'])
-    # for d in ['val', 'train', 'test']:
-    #     make_dicts(args, d)
+    # get_box_mask_stats(args, ['train', 'val', 'test'])
+    
+    for d in ['val', 'train', 'test']:
+        make_dicts(args, d)
 
     # for d in ["train", "val", "test"]:
     #     DatasetCatalog.register("melanocyte_" + d, lambda d=d: get_melanocyte_dicts(args, d))
